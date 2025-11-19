@@ -25,9 +25,12 @@ describe("Mint a Hero NFT and equip a Sword", () => {
 
   test("Created Hero and Sword", async () => {
     expect(txResponse.objectChanges).toBeDefined();
+    // console.log("changes: ",txResponse.objectChanges);
     const { heroesIds, swordsIds } = parseCreatedObjectsIds({
       objectChanges: txResponse.objectChanges!,
     });
+    console.log("heroesIds: ",heroesIds);
+    console.log("swordsIds: ",swordsIds);
     expect(heroesIds.length).toBe(1);
     expect(swordsIds.length).toBe(1);
     heroId = heroesIds[0];
