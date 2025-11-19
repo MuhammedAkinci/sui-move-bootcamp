@@ -8,21 +8,27 @@ module publisher::hero {
         id: UID,
         name: String,
     }
+    // OTW
+    public struct HERO has drop{}
 
-    fun init(ctx: &mut TxContext) {
-        // create Publisher and transfer it to the publisher wallet
+    fun init(otw: HERO, ctx: &mut TxContext) {
+        //let publisher = package::claim(otw, ctx);
+        //transfer::public_transfer(publisher, tx_context::sender(ctx));
+
+        package::claim_and_keep(otw, ctx);
     }
 
     public fun create_hero(publisher: &Publisher, name: String, ctx: &mut TxContext): Hero {
-        // verify that publisher is from the same module
-
-        // create Hero resource
+        assert!(publisher.from_module<HERO>(), EWrongPublisher);
+        Hero {
+            id: object::new(ctx),
+            name,
+        }
     }
 
     public fun transfer_hero(publisher: &Publisher, hero: Hero, to: address) {
-        // verify that publisher is from the same module
-
-        // transfer the Hero resource to the user
+        assert!(publisher.from_module<HERO>(), EWrongPublisher);
+        transfer::transfer(hero,  to);   
     }
 
     // ===== TEST ONLY =====
@@ -78,6 +84,33 @@ module publisher::hero {
     #[test]
     fun test_admin_can_transfer_hero() {
         // TODO: Implement test
+        // Task 1: Successfuly complete tasks
+        // 1. Start scenario
+        // 2. call the init fonction
+        // 3. pass to the other tx
+        // 4. Take the publisher obj from the user
+        // 4.1 test.take_from_sender<Publisher>() (use this fonction)
+        // 5. call the create_hero fonction
+        // 6. call the transher_hero fonction (transfer to the USER)
+        // 7. pass to the other tx
+        // 8. ts::has_most_recent_for_address<Hero>(USER) approve that the hero is in the user's account
+        // 9. clean
+        // 9.1 test.return_to_sender(publisher)
+        // 10. finish task
+
+        let mut ts = ts::begin(ADMIN);
+        init(HERO {}, ts.ctx());
+        ts.next_tx(ADMIN);
+        
+        let publisher = ts.take_from_sender<Publisher>();
+
+        let hero = create_hero(&publisher, b"Osman".to_string(), ts.ctx());
+        transfer_hero(&publisher, hero, USER);
+        ts.next_tx(ADMIN);
+
+        assert_eq!(ts::has_most_recent_for_address<Hero>(USER), true);
+        ts.return_to_sender(publisher);
+        ts.end();
     }
 }
 
