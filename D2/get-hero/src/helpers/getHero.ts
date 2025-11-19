@@ -7,4 +7,13 @@ import { suiClient } from "../suiClient";
  */
 export const getHero = async (id: string): Promise<SuiObjectResponse> => {
   //Implement the function to get the hero object by its ID
+  return await suiClient.getObject({
+    id,
+    options: {
+      showContent: true,
+      showType: true,
+      showPreviousTransaction: true,
+      showOwner: true
+    },
+  });
 };
