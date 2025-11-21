@@ -15,7 +15,9 @@ interface Response {
  */
 export const parseCreatedObjectsIds = ({ objectChanges }: Args): Response => {
   // TODO: Implement the function
+  const createdObjects = objectChanges.filter(({type}) => type === "created") as SuiObjectChangeCreated[]; 
+  const createdHeroes = createdObjects.filter(({objectType}) => objectType === `${ENV.PACKAGE_ID}::hero::Hero`); // not need but better to read
   return {
-    heroesIds: [],
+    heroesIds: createdHeroes.map(({objectId}) => objectId),
   };
 };

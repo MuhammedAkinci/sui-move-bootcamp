@@ -9,5 +9,20 @@ export const getWeaponIdOfHero = async (
   heroId: string
 ): Promise<string | undefined> => {
   // TODO: Implement this function
-  return undefined;
+  const hero = await suiClient.getObject({
+    id: heroId,
+    options: {
+      showContent: true,
+    },
+  });
+  //const heroContent = hero.data?.content as SuiParsedData;
+  const content = hero.data?.content as Extract<SuiParsedData, { dataType: 'moveObject' }>;
+  // console.log("content: ",content);
+  // console.log("hero: ",hero);
+
+  const fields = content.fields as { weapon: { fields: {id: {id: string}} } };
+  // console.log("fields: ",fields);
+  return fields.weapon.fields.id.id;
+  
+  // return undefined;
 };

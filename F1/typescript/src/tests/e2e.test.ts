@@ -23,6 +23,7 @@ describe("Mint a Hero NFT, a Weapon NFT and equip it", () => {
 
   test("Created Hero", async () => {
     expect(txResponse.objectChanges).toBeDefined();
+    console.log("objectChanges: ",txResponse.objectChanges); // to understand what will change wen we parse the created objects
     const { heroesIds } = parseCreatedObjectsIds({
       objectChanges: txResponse.objectChanges!,
     });
