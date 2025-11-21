@@ -1,6 +1,7 @@
 import { ConnectButton } from "@mysten/dapp-kit";
 import { Box, Container, Flex, Heading } from "@radix-ui/themes";
 import { WalletStatus } from "./WalletStatus";
+import { CreateHeroForm } from "./CreateHeroForm";
 
 function App() {
   return (
@@ -22,6 +23,16 @@ function App() {
           <ConnectButton />
         </Box>
       </Flex>
+      <Container>
+        <Container
+          mt="5"
+          pt="2"
+          px="4"
+          style={{ background: "var(--gray-a2)", minHeight: 500 }}
+        >
+          <CreateHeroForm />
+        </Container>
+      </Container>
       <Container>
         <Container
           mt="5"
